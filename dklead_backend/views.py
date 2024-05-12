@@ -41,7 +41,7 @@ def news_manipulate( request: HttpRequest, id_:int)->JsonResponse:
     try:
         news = News.objects.get(id=id_)
     except News.DoesNotExist:
-        return JsonResponse({'message':'news with id {id_} does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'message1':'news with id', 'id':id_, 'message2':'does not exist'}, status=status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
         news_ser = NewsSerializer(news,many=False)
         return JsonResponse(news_ser.data, safe=False)
@@ -50,9 +50,9 @@ def news_manipulate( request: HttpRequest, id_:int)->JsonResponse:
         news_serializer = CreateNewsSerializer(news, data = news_data)
         if news_serializer.is_valid():
             news_serializer.save()
-            print("saved msg")
-            print(news_serializer.data)
-            # dat = serialize('json', news_serializer)
             return JsonResponse(news_serializer.data, safe=False)
         return JsonResponse(news_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method=='DELETE':
+        news.delete()
+        return(HttpResponse(f'news with id:{id_} deleted'))
     return HttpResponse(f"not working")
