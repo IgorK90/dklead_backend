@@ -6,8 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import JSONParser
 
-from dklead_backend.models import News
-from dklead_backend.serializers import NewsSerializer, CreateNewsSerializer
+from dklead_backend.models import News, TeamMember
+from dklead_backend.serializers import NewsSerializer, CreateNewsSerializer, TeamSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -56,3 +56,11 @@ def news_manipulate( request: HttpRequest, id_:int)->JsonResponse:
         news.delete()
         return(HttpResponse(f'news with id:{id_} deleted'))
     return HttpResponse(f"not working")
+
+
+@api_view(['GET'])
+def list_team(request:HttpRequest)->JsonResponse:
+    if request.method=='GET':
+        team = TeamMember.objects.all()
+        team_serializer = TeamSerializer(team, many=True)
+        return JsonResponse(team_serializer.data, safe=False)

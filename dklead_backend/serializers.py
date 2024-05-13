@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import News
+from .models import News, TeamMember
+
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,3 +15,8 @@ class CreateNewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ['title', 'content', 'author']
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = '__all__'

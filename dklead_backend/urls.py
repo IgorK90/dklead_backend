@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dklead_backend.views import list_news, create_user, news_manipulate
+from dklead_backend.views import list_news, create_user, news_manipulate, list_team
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/news', list_news),
     path('api/news/<int:id_>', news_manipulate),
+    path('api/team', list_team),
     path('create_user/', create_user),
 
 ]
