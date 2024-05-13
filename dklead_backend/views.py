@@ -7,7 +7,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import JSONParser
 
 from dklead_backend.models import News, TeamMember
-from dklead_backend.serializers import NewsSerializer, CreateNewsSerializer, TeamSerializer
+from dklead_backend.serializers import NewsSerializer, CreateNewsSerializer, TeamSerializer, CreateTeamSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -58,9 +58,22 @@ def news_manipulate( request: HttpRequest, id_:int)->JsonResponse:
     return HttpResponse(f"not working")
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def list_team(request:HttpRequest)->JsonResponse:
     if request.method=='GET':
         team = TeamMember.objects.all()
         team_serializer = TeamSerializer(team, many=True)
         return JsonResponse(team_serializer.data, safe=False)
+    elif request.method=='POST':
+        # user = request.user
+        # if not user.is_authenticated:
+        #     return HttpResponseRedirect('/')
+        team = JSONParser().parse(request)
+        team_serializer = CreateTeamSerializer(data = team)
+        print(team_serializer)
+        if team_serializer.is_valid():
+            team_serializer.save()
+            return HttpResponse(f"good")
+        else:
+            return HttpResponse("bad")
+

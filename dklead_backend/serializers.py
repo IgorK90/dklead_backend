@@ -20,3 +20,8 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
         fields = '__all__'
+
+class CreateTeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = ['name','position','bio']
